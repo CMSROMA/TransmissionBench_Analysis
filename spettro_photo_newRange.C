@@ -171,7 +171,9 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   canvas_name_string=str+".png";
   strcpy(canvas_name, canvas_name_string.c_str());
   c1->SaveAs(canvas_name);
-      
+
+  std::cout << "T@400nm: " << gr1->GetBinContent(gr1->GetXaxis()->FindBin(400)) << " +/- " <<  gr1->GetBinError(gr1->GetXaxis()->FindBin(400)) << "(RMS) %" << std::endl;
+
   //TLegend *leg = new TLegend(.6,.8,.8,.4,"Lab. Lesson 1");
   //leg->SetFillColor(0);
   //gr1->SetFillColor(0);

@@ -1,17 +1,12 @@
-#include "TH1.h"
-#include "TF1.h"
-#include "TH1F.h"
+#include <cctype>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
+#include "TH1F.h"
 #include "TTree.h"
 #include "TFile.h"
-#include "TH2.h"
-#include "TGraph.h"
-#include "TGraphErrors.h"
 #include "TProfile.h"
-#include "TVector.h"
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TStyle.h"
@@ -20,16 +15,13 @@
 #include "TError.h"
 #include "TLegend.h"
 #include "TLatex.h"
-#include <cctype>
-#include "TLegend.h"
-
-
 
 // info running:
-//.L spectro_photo_newRange.c++
-//TransmissionSpectrum("nomefile",N_dataset=numero sample acquisiti)
+//.X spectro_photo_newRange.C++("nomefile")
+
 // Output: .root con w e T + Tgrapherror T vs w + plot .png average Transmission vs w
 // Output da schermo: valore T al picco di emissione;
+
 using namespace std;
 
 void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)

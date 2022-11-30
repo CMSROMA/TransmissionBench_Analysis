@@ -26,7 +26,6 @@ using namespace std;
 
 void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
 {
-
   std::ifstream myFile(file_name);
   std::string line;
         
@@ -153,19 +152,31 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
 
   TCanvas *c1 = new TCanvas("Transmission Vs Wavelenght", "T vs W" , 700,500);
   c1->cd();
+
   gPad->SetTickx(2);
   gPad->SetTicky(2);
   gPad->SetGrid();
+
   gStyle->SetOptStat(0);
+
   gr1->GetXaxis()->SetTitle("Wavelength (nm) ");
+  gr1->GetXaxis()->SetLimits(EndWL,StartWL);
+  gr1->GetXaxis()->SetRangeUser(EndWL,StartWL);
+
   gr1->GetYaxis()->SetTitle("Transmission (%)");
+  gr1->GetYaxis()->SetLimits(-5,110);
+  gr1->GetYaxis()->SetRangeUser(-5,110);
   gr1->GetYaxis()->SetNdivisions(1020);
+
   gr1->SetTitle("");
+
   gr1->SetMarkerStyle(20);
   gr1->SetMarkerSize(0.8);
   gr1->SetLineColor(2);
   gr1->SetLineWidth(2);
+
   gr1->Draw("PL");
+
   char canvas_name[50];
   string canvas_name_string;
   canvas_name_string=str+".png";
@@ -193,15 +204,3 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   hfile.Close();
   std::cout << "Saved " << namefileroot << std::endl;
 }
-    
-
-
-
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                       

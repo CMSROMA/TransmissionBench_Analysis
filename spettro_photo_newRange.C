@@ -164,8 +164,8 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   gr1->GetXaxis()->SetRangeUser(EndWL,StartWL);
 
   gr1->GetYaxis()->SetTitle("Transmission (%)");
-  gr1->GetYaxis()->SetLimits(-5,110);
-  gr1->GetYaxis()->SetRangeUser(-5,110);
+  gr1->GetYaxis()->SetLimits(-5,105);
+  gr1->GetYaxis()->SetRangeUser(-5,105);
   gr1->GetYaxis()->SetNdivisions(1020);
 
   gr1->SetTitle("");

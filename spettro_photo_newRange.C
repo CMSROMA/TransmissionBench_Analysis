@@ -7,6 +7,7 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "TProfile.h"
+#include "TGraphErrors.h"
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TStyle.h"
@@ -15,6 +16,8 @@
 #include "TError.h"
 #include "TLegend.h"
 #include "TLatex.h"
+
+#include "TROOT.h"
 
 // info running:
 //.X spectro_photo_newRange.C++("nomefile")
@@ -142,7 +145,8 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
     }        
     std::getline(myFile, line);        
   }
-    
+
+
          
   TProfile *gr1 = new TProfile("Transmission","Transmission",nMeasure+1,EndWL-ReadInterval/2,StartWL+ReadInterval/2,"S");
   if (N_dataset>1)
@@ -151,6 +155,7 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
     tree_scan->Draw("T:wl>>Transmission","","PROFS");
 
   TCanvas *c1 = new TCanvas("Transmission Vs Wavelenght", "T vs W" , 700,500);
+  
   c1->cd();
 
   gPad->SetTickx(2);
@@ -176,6 +181,20 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   gr1->SetLineWidth(2);
 
   gr1->Draw("PL");
+  for (int ig=0;ig<N_dataset;++ig)
+    {
+      tree_scan->Draw("T:wl",Form("nd==%d",ig),"LSAME");
+      TProfile* h = (TProfile*) gPad->GetPrimitive("htemp");
+      if (!h)
+	continue;
+      h->SetName(Form("meas%d",ig));
+      h->Print();
+      h->SetLineColor(ig+1);
+      h->SetMarkerColor(ig+1);
+      h->SetLineWidth(1);
+      h->Draw("LSAME");
+    }
+  gr1->Draw("PLSAME");
 
   char canvas_name[50];
   string canvas_name_string;
@@ -183,7 +202,7 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   strcpy(canvas_name, canvas_name_string.c_str());
   c1->SaveAs(canvas_name);
 
-  std::cout << "T@400nm: " << gr1->GetBinContent(gr1->GetXaxis()->FindBin(400)) << " +/- " <<  gr1->GetBinError(gr1->GetXaxis()->FindBin(400)) << "(RMS) %" << std::endl;
+  std::cout << "<T>@400nm: " << gr1->GetBinContent(gr1->GetXaxis()->FindBin(400)) << " +/- " <<  gr1->GetBinError(gr1->GetXaxis()->FindBin(400)) << "(RMS) %" << std::endl;
 
   //TLegend *leg = new TLegend(.6,.8,.8,.4,"Lab. Lesson 1");
   //leg->SetFillColor(0);

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include "TH1F.h"
+#include "TH2F.h"
 #include "TTree.h"
 #include "TFile.h"
 #include "TProfile.h"
@@ -183,16 +184,23 @@ void  spettro_photo_newRange(char const file_name[1000],int N_dataset=0)
   gr1->Draw("PL");
   for (int ig=0;ig<N_dataset;++ig)
     {
-      tree_scan->Draw("T:wl",Form("nd==%d",ig),"LSAME");
-      TProfile* h = (TProfile*) gPad->GetPrimitive("htemp");
+      //      std::cout << Form("T:wl>>m_%d(%d,%f,%f)",ig,nMeasure+1,EndWL-ReadInterval/2.,StartWL+ReadInterval/2.) << "," << Form("nd==%d",ig) << std::endl;
+      tree_scan->Draw(Form("T:wl>>m_%d(%d,%f,%f)",ig,nMeasure+1,EndWL-ReadInterval/2.,StartWL+ReadInterval/2.),Form("nd==%d",ig),"PROF");
+    }
+
+  gr1->Draw("PL");
+  for (int ig=0;ig<N_dataset;++ig)
+    {
+      TProfile* h = (TProfile*) gROOT->FindObject(Form("m_%d",ig));
       if (!h)
 	continue;
-      h->SetName(Form("meas%d",ig));
       h->Print();
-      h->SetLineColor(ig+1);
-      h->SetMarkerColor(ig+1);
+      h->SetLineColor(ig+2);
+      h->SetMarkerColor(ig+2);
+      h->SetMarkerStyle(20);
+      h->SetMarkerSize(0.6);
       h->SetLineWidth(1);
-      h->Draw("LSAME");
+      h->Draw("PLSAME");
     }
   gr1->Draw("PLSAME");
 
